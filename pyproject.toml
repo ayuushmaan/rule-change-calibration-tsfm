@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ceafm-cu"
+version = "0.1.0"
+description = "Causal Event-Aware Financial Foundation Models with Calibrated Uncertainty"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pandas",
+    "pyarrow",
+    "scikit-learn",
+    "torch",
+    "pytorch-lightning",
+    "transformers",
+    "sentence-transformers",
+    "yfinance",
+    "pandas-datareader",
+    "alpha-vantage",
+    "fredapi",
+    "tqdm",
+    "hydra-core",
+    "omegaconf",
+    "wandb",
+    "matplotlib",
+    "seaborn",
+    "plotly",
+    "pyyaml",
+    "rich",
+    "click",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ceafm*"]
