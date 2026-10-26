@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ceafm-cu"
+name = "regchange-fom"
 version = "0.1.0"
-description = "Causal Event-Aware Financial Foundation Models with Calibrated Uncertainty"
+description = "Calibration of TSFMs and TFMs Across SEBI's F&O Reforms"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -13,13 +13,14 @@ dependencies = [
     "pandas",
     "pyarrow",
     "scikit-learn",
+    "statsmodels",
+    "arch",
     "torch",
-    "pytorch-lightning",
     "transformers",
     "sentence-transformers",
     "yfinance",
+    "nsepy",
     "pandas-datareader",
-    "alpha-vantage",
     "fredapi",
     "tqdm",
     "hydra-core",
@@ -27,7 +28,6 @@ dependencies = [
     "wandb",
     "matplotlib",
     "seaborn",
-    "plotly",
     "pyyaml",
     "rich",
     "click",
@@ -35,4 +35,4 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["ceafm*"]
+include = ["regchange*"]

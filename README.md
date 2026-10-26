@@ -1,17 +1,5 @@
-# Causal Event-Aware Financial Foundation Models with Calibrated Uncertainty
+# Do Foundation Models Notice When the Rules Change?
+# Calibration of TSFMs and TFMs Across SEBI's F&O Reforms
 
-Research-grade project for event-aware forecasting with calibrated uncertainty and causal augmentation.
-
-## Quickstart
-```bash
-pip install -e .
-```
-
-## Structure
-- `src/` - Core codebase
-- `data/` - Data storage (not committed)
-- `experiments/` - Experiment configs and outputs
-- `configs/` - Hydra/YAML configs
-- `notebooks/` - Exploratory notebooks
-- `scripts/` - Data prep, training, eval scripts
-- `reports/` - Paper artifacts
+Research project focused on exogenous regulatory breaks in Indian F&O markets.
+Focus: volatility forecasting, conditional coverage, rule-keyed in-context retrieval.
