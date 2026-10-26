@@ -1,7 +1,6 @@
 """Training losses for calibration."""
 
 import torch
-import torch.nn as nn
 
 
 def quantile_loss(pred_q: torch.Tensor, y: torch.Tensor, quantiles: list) -> torch.Tensor:

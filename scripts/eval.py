@@ -12,12 +12,12 @@ from ceafm.data.synthesize import synthesize_events, events_to_meta
 from ceafm.evaluation.metrics import expected_calibration_error, prediction_interval_coverage
 
 
-def evaluate(cfg_path: str = "configs/default.yaml", ckpt: str = "experiments/ceafm_cu.pt"):
+def evaluate(cfg_path: str = "configs/default.yaml", ckpt: str = "experiments/ceafm_cu_test.pt"):
     cfg = OmegaConf.load(cfg_path)
     data = fetch_ohlcv(cfg.data.tickers, cfg.data.start_date, cfg.data.end_date)
     t = cfg.data.tickers[0]
-    df = data[t]
-    events = synthesize_events(df)
+    df = data[t].dropna()
+    events = synthesize_events(df, t)
     event_meta = events_to_meta(events, df.index)
     text_emb = np.random.randn(len(df), cfg.model.embed_dim).astype(np.float32)
 
@@ -36,7 +36,7 @@ def evaluate(cfg_path: str = "configs/default.yaml", ckpt: str = "experiments/ce
         for batch in dl:
             out = model(batch["ts_x"], batch["text_emb"], batch["event_meta"])
             q = out["quantiles"].numpy()
-            preds.append(q[:, 1])  # median
+            preds.append(q[:, 1])
             lowers.append(q[:, 0])
             uppers.append(q[:, 2])
             ys.append(batch["y"].numpy())
@@ -49,8 +49,7 @@ def evaluate(cfg_path: str = "configs/default.yaml", ckpt: str = "experiments/ce
     mae = np.mean(np.abs(preds - ys))
     rmse = np.sqrt(np.mean((preds - ys) ** 2))
     cov = prediction_interval_coverage(lowers, uppers, ys)
-    # simple ECE on sign
-    probs = 1 / (1 + np.exp(-preds * 10))  # rough
+    probs = 1 / (1 + np.exp(-preds * 10))
     ece = expected_calibration_error(probs, (ys > 0).astype(int))
     print(f"MAE={mae:.6f} RMSE={rmse:.6f} PICP(10-90)={cov:.3f} ECE={ece:.4f}")
 

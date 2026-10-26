@@ -1,9 +1,10 @@
 """Data fetching utilities."""
 
 import os
-from datetime import datetime
-from typing import List, Optional
+import math
+from typing import List
 
+import numpy as np
 import pandas as pd
 import yfinance as yf
 
@@ -16,7 +17,19 @@ def fetch_ohlcv(tickers: List[str], start: str, end: str, interval: str = "1d") 
             continue
         df = df.rename(columns=str.lower)
         df.index = pd.to_datetime(df.index)
-        df["log_ret"] = (df["close"] / df["close"].shift(1)).apply(lambda x: __import__("math").log(x) if x > 0 else float("nan"))
+        logret = []
+        closes = df["close"].values
+        for i in range(len(closes)):
+            if i == 0:
+                logret.append(np.nan)
+                continue
+            prev = float(closes[i - 1])
+            cur = float(closes[i])
+            if prev > 0 and cur > 0:
+                logret.append(math.log(cur / prev))
+            else:
+                logret.append(np.nan)
+        df["log_ret"] = logret
         df["realized_vol"] = df["log_ret"].rolling(20).std()
         data[t] = df
     return data
